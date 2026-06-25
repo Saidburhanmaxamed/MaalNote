@@ -26,15 +26,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
   const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // Prefill helper for instant testing
-  const handlePrefillDemo = () => {
-    setEmail('demo@storeledger.com');
-    setPassword('password123');
-    setIsLogin(true);
-    setIsForgotPassword(false);
-    setError('');
-    setSuccessMessage('');
-  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -367,19 +359,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
             </form>
           )}
 
-          {isLogin && !isForgotPassword && (
-            <div className="mt-6 pt-6 border-t border-slate-800/60 text-center">
-              <p className="text-xs text-slate-500">
-                Want to explore the app instantly?
-              </p>
-              <button
-                onClick={handlePrefillDemo}
-                className="mt-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors underline cursor-pointer"
-              >
-                Use Demo Account
-              </button>
-            </div>
-          )}
+
         </div>
       </motion.div>
     </div>

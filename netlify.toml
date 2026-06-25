@@ -1,0 +1,56 @@
+# MaalNote - Netlify Deployment Configuration
+# This file configures Netlify builds, redirects, routing, and headers.
+
+[build]
+  # Build Command: Compiles the React client-side files into static assets
+  command = "npm run build"
+  
+  # Publish Directory: The folder compiled by Vite that Netlify will serve
+  publish = "dist"
+
+[dev]
+  # Configures Netlify Dev CLI for local server previewing
+  command = "npm run dev"
+  port = 3000
+  targetPort = 3000
+
+# ------------------------------------------------------------------------------
+# REDIRECTS & REWRITES
+# ------------------------------------------------------------------------------
+
+# Route 1: Proxy API requests to your deployed full-stack backend server.
+# When you deploy your server to a platform like Cloud Run, Heroku, or Render,
+# update the 'to' address below or define the BACKEND_API_URL environment variable.
+[[redirects]]
+  from = "/api/*"
+  to = "https://ais-dev-2bbzxmdqtle2zpnbqdz4bu-439072164963.europe-west1.run.app/api/:splat"
+  status = 200
+  force = true
+
+# Route 2: Single Page Application (SPA) Fallback.
+# This prevents 404 errors when a user refreshes the page on deep client-side routes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ------------------------------------------------------------------------------
+# CUSTOM HEADERS
+# ------------------------------------------------------------------------------
+
+# Configure secure HTTP response headers for all served assets
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' https: data:; connect-src 'self' https: wss:;"
+
+# Optimize caching for static assets (images, css, js) inside /assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
