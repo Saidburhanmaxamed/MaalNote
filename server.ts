@@ -17,7 +17,8 @@ const app = express();
 const PORT = 3000;
 
 // Path to JSON database
-const DATA_DIR = path.join(process.cwd(), 'data');
+const isNetlify = !!process.env.NETLIFY || !!process.env.LAMBDA_TASK_ROOT || !!process.env.FUNCTIONS_SIGNATURE;
+const DATA_DIR = isNetlify ? '/tmp' : path.join(process.cwd(), 'data');
 const DB_FILE = path.join(DATA_DIR, 'db.json');
 
 // Ensure database file exists
@@ -845,4 +846,9 @@ async function startServer() {
   });
 }
 
-startServer();
+// Only start the persistent server in non-Netlify environments
+if (!isNetlify) {
+  startServer();
+}
+
+export { app, syncFromSupabase };
