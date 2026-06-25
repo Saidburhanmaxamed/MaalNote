@@ -1,0 +1,6 @@
+{
+  "name": "MaalNote",
+  "description": "A modern responsive bookkeeping application to manage store income, expenses, and financial reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
